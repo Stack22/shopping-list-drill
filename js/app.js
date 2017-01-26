@@ -1,6 +1,6 @@
 // Shopping list item
 var shoppingList = {
-  items: ["peas", "fruits", "vegetables", "Dt Mt Dew"]
+  items: []
 };
 
 // Add items to list
@@ -34,7 +34,12 @@ var renderList = function(list, element) {
 };
 
 // Do all the things
-$(":submit").click(function(event) {
+var doTheThing = function() {
+  $(":submit").click(function(event) {
   addToList(shoppingList, $(".js-input").val());
+  console.log(shoppingList);
   renderList(shoppingList, $("#js-ul-parent"));
-});
+  });
+};
+
+doTheThing();
