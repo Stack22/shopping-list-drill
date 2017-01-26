@@ -1,6 +1,6 @@
 // Shopping list item
 var shoppingList = {
-  items: []
+  items: ["peas", "fruits", "vegetables", "Dt Mt Dew"]
 };
 
 // Add items to list
@@ -27,10 +27,10 @@ var remFromList = function(list, item) {
 var renderList = function(list, element) {
   console.log("starting renderList")
   var itemsHTML = list.items.map(function(item) {
-    return '<li><span class="shopping-item">' + $(".js-input").val() + '</span><div class="shopping-item-controls"><button class="shopping-item-toggle"><span class="button-label">check</span></button><button class="shopping-item-delete"><span class="button-label">delete</span></button></div></li>'
+    return '<li><span class="shopping-item">' + item + '</span><div class="shopping-item-controls"><button class="shopping-item-toggle"><span class="button-label">check</span></button><button class="shopping-item-delete"><span class="button-label">delete</span></button></div></li>'
       });
       console.log("itemsHTML: " + itemsHTML);
-      element.html(itemsHTML);
+      element.append(itemsHTML);
 };
 
 // Do all the things
