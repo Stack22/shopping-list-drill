@@ -36,10 +36,11 @@ var renderList = function(list, element) {
 // Do all the things
 var doTheThing = function() {
   $(":submit").click(function(event) {
+    event.preventDefault();
   addToList(shoppingList, $(".js-input").val());
   console.log(shoppingList);
   renderList(shoppingList, $("#js-ul-parent"));
   });
 };
 
-doTheThing();
+$(doTheThing());
