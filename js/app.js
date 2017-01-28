@@ -1,6 +1,8 @@
 // Shopping list item
 var shoppingList = {
-  items: []
+  items: [],
+  prehtml: '<li><span class="shopping-item js-item">',
+  posthtml: '</span><div class="shopping-item-controls"><button  class="shopping-item-toggle"><span class="button-label js-check">check</span></button><button class="shopping-item-delete js delete"><span class="button-label">delete</span></button></div></li>'
 };
 
 // Add items to list
@@ -8,7 +10,8 @@ var addToList = function(list, item) {
   console.log("start addToList");
   if (list.items.includes(item)) {
     // toggle checked
-    console.log("item already in list");
+    console.log("item already on list");
+    alert("That item already exists on list!");
     $(".js-input").val("");
   } else {
     list.items.push(item);
@@ -41,7 +44,7 @@ var renderList = function(list, element) {
   console.log("starting renderList")
   $(".js-ul-parent").html("");
   var itemsHTML = list.items.map(function(item) {
-    return '<li><span class="shopping-item js-item">' + item + '</span><div class="shopping-item-controls"><button  class="shopping-item-toggle"><span class="button-label js-check">check</span></button><button class="shopping-item-delete"><span class="button-label js-delete">delete</span></button></div></li>'
+    return list.prehtml + item + list.posthtml;
       });
       // console.log("itemsHTML: " + itemsHTML);
       element.html(itemsHTML);
@@ -54,13 +57,6 @@ var doTheThing = function() {
     addToList(shoppingList, $(".js-input").val());
     renderList(shoppingList, $("#js-ul-parent"));
     console.log(shoppingList);
-  });
-  $("#js-ul-parent").click(function(event) {
-    event.stopImmediatePropagation();
-    console.log("Remove: " + $("js-item").text());
-    remFromList(shoppingList, $(this).closest("span").val());
-    renderList(shoppingList, $("#js-ul-parent"));
-    console.log(shoppingList.items);
   });
 };
 
