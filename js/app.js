@@ -2,7 +2,7 @@
 var shoppingList = {
   items: [],
   prehtml: '<li><span class="shopping-item js-item">',
-  posthtml: '</span><div class="shopping-item-controls"><button  class="shopping-item-toggle"><span class="button-label js-check">check</span></button><button class="shopping-item-delete js delete"><span class="button-label">delete</span></button></div></li>'
+  posthtml: '</span><div class="shopping-item-controls"><button  class="shopping-item-toggle"><label class="button-label js-check">check</label></button><button class="shopping-item-delete"><label class="button-label" id="delete-item" >delete</label></button></div></li>'
 };
 
 // Add items to list
@@ -27,7 +27,6 @@ var remFromList = function(list, item) {
 
 // "Check" items on list (toggleClass ?)
 
-
 // "Un-check" items on list
 
 
@@ -41,15 +40,16 @@ var renderList = function(list, element) {
 };
 
 // Do all the things
-var doTheThing = function() {
+var doAllTheThings = function() {
   $("#add-item").click(function(event) {
     event.preventDefault();
     addToList(shoppingList, $(".js-input").val());
     renderList(shoppingList, $("#js-ul-parent"));
   });
-  $("#js-item").click(function(event) {
+  $("#js-ul-parent").on('click', ".shopping-item-delete", function(event) {
     event.stopImmediatePropagation();
-  })
+    console.log($("span:nth-of-type(1)").text());
+  });
 };
 
-$(doTheThing());
+$(doAllTheThings());
