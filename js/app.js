@@ -7,33 +7,33 @@ var state = {
 
 var listItemTemplate = (
   '<li><span class="shopping-item js-item">'+
-  '</span><div class="shopping-item-controls"><button  class="shopping-item-toggle"><label class="button-label js-check">check</label></button><button class="shopping-item-delete"><label class="button-label" id="delete-item" >delete</label></button></div></li>'
+  '</span><div class="shopping-item-controls"><button  class="shopping-item-toggle"><label class="button-label" id="#js-check-item">check</label></button><button class="shopping-item-delete"><label class="button-label" id="js-delete-item" >delete</label></button></div></li>'
 )
 // Add items to list
 var addToList = function(state, item) {
-  // if (state.items.itemName.includes(item)) {
-  //   // need to make sure un-checked (since already on list)
-  //   alert("That item already exists on list!");
-  //   $(".js-input").val("");
-  // } else {
+  if (state.items.hasOwnProperty(item)) { // not working
+    // need to make sure un-checked (since already on list)
+    alert("That item already exists on list!");
+    $(".js-input").val("");
+  } else {
     state.items.push({
       itemName: item,
       itemChecked: false
     });
-  // };
+  };
 };
 
 // Remove items from list
-var remFromList = function(state, item) {
-  var arrayLoc = state.items.indexOf(item);
-  if (state.items[arrayLoc] === item) {
-    state.items.splice(arrayLoc, 1);
-  }
-};
+function deleteItem(state, itemIndex) {
+  state.items.splice(itemIndex, 1);
+}
+// var remFromList = function(state, item) {
+//   var arrayLoc = state.items.indexOf(item);
+//   if (state.items[arrayLoc] === item) {
+//     state.items.splice(arrayLoc, 1);
+//   }
+// };
 
-// "Check" items on list (toggleClass ?)
-
-// "Un-check" items on list
 
 
 // Render functions (DOM manipulation)
@@ -55,34 +55,38 @@ function renderList(state, listElement, itemDataAttr) {
   });
   listElement.html(itemsHTML);
 }
-// function renderList(state, element) {
-//   $(".js-ul-parent").html("");
-//   var itemsHTML = state.items.map(function(item) {
-//     return state.prehtml + item + state.posthtml;
-//       });
-//       element.html(itemsHTML);
-// };
-
 
 // Event listeners
-function addAnItem(state, listElement, formElement) {
+function addAnItem(state, listElement, formElement, itemID, itemDataAttr) {
   formElement.submit(function(event) {
     event.preventDefault();
-    var newItem = $(".js-input").val();
+    // var newItem = $(".js-input").val();
+    var newItem = formElement.find(itemID).val();
     addToList(state, newItem);
-    renderList(state, listElement);
+    renderList(state, listElement, itemDataAttr);
     this.reset();
   });
 }
 
+function delAnItem(state, formElement, delButtonID, itemDataAttr, listElement) {
+  listElement.on('click', delButtonID, function(event) {
+    var itemIndex = parseInt($(this).closest('li').attr(itemDataAttr));
+    deleteItem(state, itemIndex);
+    renderList(state, listElement, itemDataAttr);
+  });
+}
+
+// function delAnItem(state, )
 // Do all the things
 $(function() {
   var formElement = $("#js-shopping-list-form");
   var listElement = $("#js-ul-parent");
-  addAnItem(state, listElement, formElement);
+  var itemID = "#js-new-item";
+  var delButtonID = "#js-delete-item";
+  var checkButtonID = "#js-check-item";
+  var itemDataAttr = "data-list-item-id";
 
-    $("#js-ul-parent").on('click', ".shopping-item-delete", function(event) {
-      event.stopImmediatePropagation();
-      console.log($("span:nth-of-type(1)").text());
-    });
+  addAnItem(state, listElement, formElement, itemID, itemDataAttr);
+  delAnItem(state, formElement, delButtonID, itemDataAttr, listElement);
+
 })
