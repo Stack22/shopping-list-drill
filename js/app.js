@@ -1,5 +1,5 @@
 // Shopping list item
-var shoppingList = {
+var state = {
   items: [],
   prehtml: '<li><span class="shopping-item js-item">',
   posthtml: '</span><div class="shopping-item-controls"><button  class="shopping-item-toggle"><label class="button-label js-check">check</label></button><button class="shopping-item-delete"><label class="button-label" id="delete-item" >delete</label></button></div></li>'
@@ -39,17 +39,24 @@ var renderList = function(list, element) {
       element.html(itemsHTML);
 };
 
-// Do all the things
-var doAllTheThings = function() {
-  $("#add-item").click(function(event) {
+// Event listeners
+function addAnItem(state, listElement, formElement) {
+  formElement.submit(function(event) {
     event.preventDefault();
-    addToList(shoppingList, $(".js-input").val());
-    renderList(shoppingList, $("#js-ul-parent"));
+    var newItem = $(".js-input").val();
+    addToList(state, newItem);
+    renderList(state, listElement);
   });
-  $("#js-ul-parent").on('click', ".shopping-item-delete", function(event) {
-    event.stopImmediatePropagation();
-    console.log($("span:nth-of-type(1)").text());
-  });
-};
+}
 
-$(doAllTheThings());
+// Do all the things
+$(function() {
+  var formElement = $("#js-shopping-list-form");
+  var listElement = $("#js-ul-parent");
+  addAnItem(state, listElement, formElement);
+
+    $("#js-ul-parent").on('click', ".shopping-item-delete", function(event) {
+      event.stopImmediatePropagation();
+      console.log($("span:nth-of-type(1)").text());
+    });
+})
